@@ -1,0 +1,22 @@
+<div class="posts"> <!-- hee hee hee --> </div>
+<script>
+	async function get() {
+		const url = "https://api.github.com/repos/illogicalapple/blogio/git/trees/main?recursive=1";
+		const data = await fetch(url).then(r => r.json());
+		const directory = await fetch(data.tree.find(e => e.path == "markdown").url);
+		const files = await Promise.all(directory.tree.map(e => fetch("https://illogicalapple.github.io/blogio/markdown/" + e.path).then(r => r.text())));
+		const el = document.querySelector("div.posts");
+		files.forEach(file => {
+			let e = document.createElement("div");
+			let desc = document.createElement("span");
+			let author = document.createElement("span");
+			author.classList.add("author");
+			desc.classList.add("desc");
+			e.classList.add("post");
+			e.append(desc);
+			e.append(author);
+			el.append(e);
+		});
+	}
+	get();
+</script>
