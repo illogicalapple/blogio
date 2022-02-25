@@ -27,13 +27,14 @@
 	<body style="margin: 0px;">
 		<div style class="md"></div>
 		<script>
+			var raw, muchmarkable, data;
 			async function load(url, el) {
-				var raw = await fetch(url).then(response => response.text());
-				var muchmarkable = new Remarkable({
+				raw = await fetch(url).then(response => response.text());
+				muchmarkable = new Remarkable({
 					html: true
 				});
 				raw = raw.split("\n---\n");
-				var data = raw.splice(0, 1)[0];
+				data = raw.splice(0, 1)[0];
 				el.innerHTML = `<header><h1>${data[0]}</h1><p class="desc">${data[1]}</p><p class="author">by ${data[2]}</p></header>` + muchmarkable.render(raw.join("\n---\n"));
 				hljs.highlightAll(); // :o wowee i like this now
 			}
