@@ -32,9 +32,10 @@
 				var muchmarkable = new Remarkable({
 					html: true
 				});
-				var data = raw.split("---")[0].split("\n");
-				el.innerHTML = muchmarkable.render(`<header><h1>${data[0]}</h1><p class="desc">${data[1]}</p><p class="author">by ${data[2]}</p></header>${raw}`);
-				hljs.highlightAll(); // :o
+				raw = raw.split("\n---\n");
+				var data = raw.splice(0, 1)[0];
+				el.innerHTML = `<header><h1>${data[0]}</h1><p class="desc">${data[1]}</p><p class="author">by ${data[2]}</p></header>` + muchmarkable.render(raw.join("\n---\n"));
+				hljs.highlightAll(); // :o wowee i like this now
 			}
 			load(`./markdown/${(new URLSearchParams(location.search)).get("name")}.md`, document.querySelector(".md")).then(() => console.log("done :p"));
 		</script>
