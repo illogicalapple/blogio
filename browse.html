@@ -3,14 +3,17 @@
 	async function get() {
 		const url = "https://api.github.com/repos/illogicalapple/blogio/git/trees/main?recursive=1";
 		const data = await fetch(url).then(r => r.json());
-		const directory = await fetch(data.tree.find(e => e.path == "markdown").url);
-		const files = await Promise.all(directory.tree.map(e => fetch("https://illogicalapple.github.io/blogio/markdown/" + e.path).then(r => r.text())));
+		const files = await Promise.all(data.tree.filter(e => e.substring(0, 9) == "markdown/").map(e => fetch("https://illogicalapple.github.io/" + e).then(r => r.text())));
 		const el = document.querySelector("div.posts");
 		files.forEach(file => {
 			let e = document.createElement("div");
 			let desc = document.createElement("span");
 			let author = document.createElement("span");
+			let title = document.createElement("span");
+			let data = file.split("\n---\n")[0].split("\n");
+			[ title.innerText, desc.innerText, author.innerText ] = data;
 			author.classList.add("author");
+			title.classList.add("title");
 			desc.classList.add("desc");
 			e.classList.add("post");
 			e.append(desc);
