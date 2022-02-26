@@ -3,7 +3,7 @@
 	async function get() {
 		const url = "https://api.github.com/repos/illogicalapple/blogio/git/trees/main?recursive=1";
 		const data = await fetch(url).then(r => r.json());
-		const files = await Promise.all(data.tree.filter(e => e.path.substring(0, 9) == "markdown/").map(e => fetch("https://illogicalapple.com/" + e.path).then(r => r.text())));
+		const files = await Promise.all(data.tree.filter(e => e.path.substring(0, 9) == "markdown/").map(e => fetch("https://illogicalapple.com/blogio/" + e.path).then(r => r.text())));
 		const el = document.querySelector("div.posts");
 		files.forEach(file => {
 			let e = document.createElement("div");
