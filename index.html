@@ -42,6 +42,9 @@
 				});
 				raw = raw.split("\n---\n");
 				data = raw.splice(0, 1)[0].split("\n");
+				window.parent.postMessage({
+					title: data[0]
+				}, "*"); // probably unsafe
 				el.innerHTML = `<header><h1>${data[0]}</h1><p class="desc">${data[1]}</p><p class="author">by ${data[2]}</p></header>` + muchmarkable.render(raw.join("\n---\n"));
 				hljs.highlightAll(); // :o wowee i like this now
 			}
